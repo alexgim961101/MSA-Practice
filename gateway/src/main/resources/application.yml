@@ -13,6 +13,23 @@ spring:
             baseMessage: Spring CLoud Gateway Global FIlter
             preLogger: true
             postLogger: true
+      routes:
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+          filters:
+            - name: CustomFilter
+              args:
+                baseMessage: --- custom filter ---
+                preLogger: true
+                postLogger: true
+            - name: LoggingFilter
+              args:
+                baseMessage: Spring Logging Filter
+                preLogger: true
+                postLogger: true
+
 
 eureka:
   client:

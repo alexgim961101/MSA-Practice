@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.core.Ordered;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -18,26 +19,32 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Conf
 
     @Override
     public GatewayFilter apply(Config config) {
-        // pre filter 영역
-        return (((exchange, chain) -> {
+        // Custom pre filter
+        return ((exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
 
-            request.mutate().header("service", "service-header");
-            log.info("Global Filter baseMessage -> {}", config.baseMessage);
+            request.mutate()
+                    .header("first-service", "first-service-header");
+            log.info("Global Filter baseMessage -> {}", config.getBaseMessage());
 
-            if(config.isPreLogger()) log.info("Global Filter Start : request id -> {}", request.getId());
+            if(config.isPreLogger()) {
+                log.info("Global Filter Start: request id -> {}", request.getId());
+            }
 
-            // post filter 영역
+            // Custom post filter
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-                response.getHeaders().add("service", "service-header");
-                if(config.isPostLogger()) log.info("Global Filter end : response id -> {}", response.getStatusCode());
+                response.getHeaders().add("first-service", "first-service-header");
+                if(config.isPostLogger()) {
+                    log.info("Global Filter end: request id -> {}", response.getStatusCode());
+                }
             }));
-        }));
+        });
     }
 
     @Data
-    static class Config {
+    public static class Config {
+        // Put the configuration properties
         private String baseMessage;
         private boolean preLogger;
         private boolean postLogger;

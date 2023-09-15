@@ -20,18 +20,48 @@ public class LoggingFilter extends AbstractGatewayFilterFactory<LoggingFilter.Co
 
     @Override
     public GatewayFilter apply(Config config) {
+//        // Custom pre filter
+//        return ((exchange, chain) -> {
+//            ServerHttpRequest request = exchange.getRequest();
+//            ServerHttpResponse response = exchange.getResponse();
+//
+//
+//            request.mutate()
+//                    .header("first-service", "first-service-header");
+//            log.info("Logging Filter baseMessage -> {}", config.getBaseMessage());
+//
+//            if(config.isPreLogger()) {
+//                log.info("Logging pre Filter Start: request id -> {}", request.getId());
+//            }
+//
+//            // Custom post filter
+//            return chain.filter(exchange).then(Mono.fromRunnable(() -> {
+//                response.getHeaders().add("first-service", "first-service-header");
+//                if(config.isPostLogger()) {
+//                    log.info("Logging POST Filter end: request id -> {}", response.getStatusCode());
+//                }
+//            }));
+//        });
+
         GatewayFilter filter = new OrderedGatewayFilter(((exchange, chain) -> {
-            // preFilter 영역
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
 
-            request.mutate().header("logging-service", "logging-service-header");
-            if(config.isPreFilter()) log.info("Logging pre Filter Start : request id -> {}", request.getId());
 
-            // postFilter 영역
+            request.mutate()
+                    .header("first-service", "first-service-header");
+            log.info("Logging Filter baseMessage -> {}", config.getBaseMessage());
+
+            if(config.isPreLogger()) {
+                log.info("Logging pre Filter Start: request id -> {}", request.getId());
+            }
+
+            // Custom post filter
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-                response.getHeaders().add("logging-service", "logging-service-header");
-                if(config.isPostFilter()) log.info("Logging pre Filter end : response id -> {}", response.getStatusCode());
+                response.getHeaders().add("first-service", "first-service-header");
+                if(config.isPostLogger()) {
+                    log.info("Logging POST Filter end: request id -> {}", response.getStatusCode());
+                }
             }));
         }), Ordered.LOWEST_PRECEDENCE);
 
@@ -39,9 +69,10 @@ public class LoggingFilter extends AbstractGatewayFilterFactory<LoggingFilter.Co
     }
 
     @Data
-    static class Config {
+    public static class Config {
+        // Put the configuration properties
         private String baseMessage;
-        private boolean preFilter;
-        private boolean postFilter;
+        private boolean preLogger;
+        private boolean postLogger;
     }
 }
