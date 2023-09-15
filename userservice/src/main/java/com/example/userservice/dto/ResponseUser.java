@@ -1,6 +1,6 @@
 package com.example.userservice.dto;
 
-import com.example.userservice.domain.UserEntity;
+import com.example.userservice.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +24,7 @@ public class ResponseUser {
         this.orders = orders;
     }
 
-    public static ResponseUser createResponseUser(UserEntity entity) {
+    public static ResponseUser createResponseUser(User entity) {
         return ResponseUser.builder()
                 .userId(entity.getUserId())
                 .name(entity.getName())

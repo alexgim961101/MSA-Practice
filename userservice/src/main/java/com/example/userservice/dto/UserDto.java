@@ -1,6 +1,6 @@
 package com.example.userservice.dto;
 
-import com.example.userservice.domain.UserEntity;
+import com.example.userservice.domain.user.User;
 import lombok.Builder;
 import lombok.Data;
 
@@ -32,7 +32,7 @@ public class UserDto {
     }
 
     //== 생성 메서드 ==//
-    public static UserDto fromEntity(UserEntity entity, List<ResponseOrder> orders) {
+    public static UserDto fromEntity(User entity, List<ResponseOrder> orders) {
         return UserDto.builder()
                 .email(entity.getEmail())
                 .pwd(entity.getPwd())

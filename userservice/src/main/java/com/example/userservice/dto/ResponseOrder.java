@@ -1,6 +1,5 @@
 package com.example.userservice.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.time.LocalDate;
