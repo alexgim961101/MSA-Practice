@@ -1,9 +1,7 @@
 package com.example.userservice.controller;
 
 import com.example.userservice.domain.user.User;
-import com.example.userservice.dto.RequestUser;
-import com.example.userservice.dto.ResponseUser;
-import com.example.userservice.dto.UserDto;
+import com.example.userservice.dto.*;
 import com.example.userservice.service.UserService;
 import com.example.userservice.vo.Greeting;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user-service")
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -26,6 +24,13 @@ public class UserController {
 
     @Value("${greeting.message}")
     private String welcome;
+
+//    @PostMapping("/api/token")
+//    public ResponseEntity<CreateAccessTokenResponse> createAccessToken(@RequestBody CreateAccessTokenRequest request) {
+//        String newAccessToken = tokenService.createNewAccessToken(request.getRefreshToken());
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(new CreateAccessTokenResponse(newAccessToken));
+//    }
 
     @GetMapping("/health_check")
     public String status(HttpServletRequest request) {
@@ -65,4 +70,10 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+
+//    // 사용자 로그인
+//    @PostMapping("/login")
+//    public ResponseEntity<ResponseUser> login() {
+//
+//    }
 }

@@ -34,7 +34,7 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Conf
 
             // Custom post filter
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-                response.getHeaders().add("first-service", "first-service-header");
+                // response.getHeaders().add("first-service", "first-service-header");
                 if(config.isPostLogger()) {
                     log.info("Global Filter end: request id -> {}", response.getStatusCode());
                 }

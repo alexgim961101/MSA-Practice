@@ -6,6 +6,7 @@ import com.example.userservice.dto.RequestUser;
 import com.example.userservice.dto.ResponseOrder;
 import com.example.userservice.dto.UserDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,22 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public User getUserById(Long id) {
+
+        User userEntity = userRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
+
+        return userEntity;
+    }
+
+    @Override
     public Iterable<User> getUserByAll() {
         return userRepo.findAll();
+    }
+
+    @Override
+    public UserDto getUSerDetailsByEmail(String username) {
+        User userEntity = userRepo.findByEmail(username).orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
+
+        return UserDto.fromEntity(userEntity, null);
     }
 }
