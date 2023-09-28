@@ -45,7 +45,9 @@ public class SecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests((auth) -> {
-            auth.requestMatchers(new MvcRequestMatcher(introspector, "/**")).permitAll()
+            auth.requestMatchers(new MvcRequestMatcher(introspector, "/users/**")).permitAll()
+                    .requestMatchers(new MvcRequestMatcher(introspector, "/login")).permitAll()
+                    .requestMatchers(new MvcRequestMatcher(introspector, "/actuator/**")).permitAll()
                     .anyRequest()
                     .authenticated();
         }).addFilter(getAuthenticationFilter())

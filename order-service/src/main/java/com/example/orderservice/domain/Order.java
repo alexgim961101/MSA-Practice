@@ -17,7 +17,7 @@ public class Order {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, length = 120, unique = true)
+    @Column(nullable = false, length = 120)
     private String productId;
     @Column(nullable = false)
     private Integer qty;
@@ -31,7 +31,7 @@ public class Order {
     @Column(unique = true, nullable = false)
     private String orderId;
 
-    @Column(nullable = false, updatable = false, insertable = false)
+    @Column(updatable = false, insertable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
