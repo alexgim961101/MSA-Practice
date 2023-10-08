@@ -4,8 +4,26 @@ server:
 spring:
   application:
     name: config-service
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+  #  profiles:
+#    active: native
   cloud:
     config:
       server:
+#        native:
+#          search-locations: file:///Users/jihyeon/Documents/study/native-file-repo
         git:
-          uri: file:///Users/alexgim/Documents/msa_config_server
+#          uri: file:///Users/jihyeon/Documents/study/git-local-repo
+          uri: https://github.com/alexgim961101/spring-config-server.git
+#          username: [username]
+#          password: [password]
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, httpexchanges, busrefresh

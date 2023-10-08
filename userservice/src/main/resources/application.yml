@@ -13,6 +13,11 @@ eureka:
 spring:
   application:
     name: user-service
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -36,12 +41,8 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans
+        include: refresh, health, beans, busrefresh, httpexchanges
 
-
-token:
-  expiration_time: 86400000
-  secret: user_token
 
 logging:
   level:
